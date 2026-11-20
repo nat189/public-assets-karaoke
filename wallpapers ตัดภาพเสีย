@@ -1,0 +1,43 @@
+(async () => {
+    const jsonUrl = 'https://raw.githubusercontent.com/nat189/public-assets-karaoke/refs/heads/master/wall.json';
+    const res = await fetch(jsonUrl);
+    const data = await res.json();
+
+    const uniqueLinks = [...new Set(data.map(item => typeof item === 'string' ? item : item.url).filter(Boolean))];
+    console.log(`⏳ กำลังตรวจสอบทั้งหมด ${uniqueLinks.length} รูป...`);
+
+    const validLinks = [];
+    const batchSize = 20;
+
+    const checkImg = (url) => new Promise(resolve => {
+        const img = new Image();
+        const timer = setTimeout(() => resolve(null), 5000);
+        img.onload = () => {
+            clearTimeout(timer);
+            if (img.naturalWidth >= 1280 && img.naturalHeight >= 720) {
+                resolve(url);
+            } else {
+                resolve(null);
+            }
+        };
+        img.onerror = () => { clearTimeout(timer); resolve(null); };
+        img.src = url;
+    });
+
+    for (let i = 0; i < uniqueLinks.length; i += batchSize) {
+        const batch = uniqueLinks.slice(i, i + batchSize);
+        const results = await Promise.all(batch.map(checkImg));
+        validLinks.push(...results.filter(Boolean));
+        console.log(`🔎 ตรวจแล้ว ${Math.min(i + batchSize, uniqueLinks.length)}/${uniqueLinks.length} (ใช้ได้จริง ${validLinks.length} รูป)`);
+    }
+
+    // สั่งดาวน์โหลดเป็นไฟล์ .json ลงเครื่องทันที
+    const finalJson = JSON.stringify(validLinks, null, 2);
+    const blob = new Blob([finalJson], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'wall_valid.json';
+    a.click();
+
+    console.log(`✅ เสร็จสิ้น! ดาวน์โหลดไฟล์ wall_valid.json (${validLinks.length} รูป) เรียบร้อยแล้ว`);
+})();
