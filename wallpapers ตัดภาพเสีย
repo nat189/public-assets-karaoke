@@ -1,5 +1,5 @@
 (async () => {
-    const jsonUrl = 'https://raw.githubusercontent.com/nat189/public-assets-karaoke/refs/heads/master/wall.json';
+    const jsonUrl = 'https://raw.githubusercontent.com/nat189/public-assets-karaoke/refs/heads/master/wallpapers.json';
     const res = await fetch(jsonUrl);
     const data = await res.json();
 
