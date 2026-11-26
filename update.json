@@ -2,5 +2,5 @@
   "versionCode": 60,
   "versionName": "3.0.6",
   "apkUrl": "https://github.com/nat189/public-assets-karaoke/releases/download/v3.0.6/Napat_Karaoke_Pro_v3.0.6.apk",
-  "notes": "• เพิ่มระบบอัปเดตแอปอัตโนมัติในตัว\n• ปรับความลื่นไหลสำหรับ Android TV"
+  "notes": "• เปลี่ยนระบบดึงรายชื่อเซิร์ฟเวอร์แบบ Dynamic + Cache เปิดแอปไวเหมือนเดิม\n• คงความลื่นไหลสำหรับ Android TV และปรับปรุงความปลอดภัย"
 }
